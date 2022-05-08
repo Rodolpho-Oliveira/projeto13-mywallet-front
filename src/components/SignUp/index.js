@@ -1,9 +1,10 @@
 import axios from "axios"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function SignUp(){
+    const navigate = useNavigate()
     const [userSignUp, setUserSignUp] = useState({name: "", email: "", password: "", repeatPassword: "" })
-    console.log(userSignUp)
     return(
         <div>
             <form onSubmit={createAccount}>
@@ -18,9 +19,14 @@ export default function SignUp(){
 
     function createAccount(e){
         e.preventDefault()
-        axios
-        .post("https://mywallet-back-end-project.herokuapp.com/sign-up", userSignUp)
-        .then()
-        .catch(console.log("foi não"))
+        const promise = axios.post("https://mywallet-back-end-project.herokuapp.com/sign-up", userSignUp)
+        promise.catch((e) => {
+            alert("Preencha corretamente!")
+            console.log(e)
+        })
+        promise.then(() => {
+            navigate("/login")
+    })
+        
     }
 }
