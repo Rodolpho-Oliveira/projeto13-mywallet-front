@@ -26,11 +26,8 @@ export default function Login(){
             console.log(e)
         })
         promise.then((response) => {
-            console.log(response)
             localStorage.setItem("token", response.data[0])
             localStorage.setItem("name", response.data[1])
-            console.log(localStorage.getItem("token"))
-            console.log(localStorage.getItem("name"))
             navigate("/menu")
         })
     }

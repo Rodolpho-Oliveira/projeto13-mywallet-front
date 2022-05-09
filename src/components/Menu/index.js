@@ -11,7 +11,7 @@ export default function Menu(){
     const [statements, setStatements] = useState([])
     const [balance, setBalance] = useState(0)
     useEffect(() => {
-    function teste(){
+    function getStatements(){
         const promise = axios.get("https://mywallet-back-end-project.herokuapp.com/statement", {
             headers: {
                 token: localStorage.getItem("token")
@@ -19,7 +19,6 @@ export default function Menu(){
         })
         promise.then((response) => {
             setStatements(response.data)
-            console.log("foi")
             setBalance(getTotal())
             return balance
         })
@@ -27,7 +26,7 @@ export default function Menu(){
             console.log(e)
         })
 }
-teste()
+getStatements()
 }, [balance])
 
     return(
@@ -75,11 +74,9 @@ teste()
         statements.forEach((data) =>{
             if(data.idType === 1){
                 total += parseFloat(data.value)
-                console.log("aaaa")
             }
             else{
                 total -= parseFloat(data.value)
-                console.log("aaaa")
             }
             
         })
