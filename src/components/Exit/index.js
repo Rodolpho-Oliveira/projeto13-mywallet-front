@@ -12,7 +12,7 @@ export default function Exit(){
         <Forms>
             <form onSubmit={createExit}>
                 <input onChange={(e) => setExit({...exit, value: e.target.value})} placeholder="Valor" step="any" type="number"/>
-                <input onChange={(e) => setExit({...exit, description: e.target.value})} placeholder="Descrição" type="text"/>
+                <input onChange={(e) => setExit({...exit, description: e.target.value})} maxLength="15" placeholder="Descrição" type="text"/>
                 <SubmitButton type="submit"/>
             </form>
         </Forms>
@@ -65,5 +65,4 @@ const Title = styled.h1`
     color: #ffffff;
     font-size: 26px;
     font-weight: 700;
-
 `

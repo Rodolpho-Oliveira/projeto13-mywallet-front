@@ -5,18 +5,31 @@ import { Link } from "react-router-dom"
 import { MdAddCircleOutline } from "react-icons/md"
 import { MdExitToApp } from "react-icons/md"
 import { IoMdRemoveCircleOutline } from "react-icons/io"
+import { useEffect } from "react"
 
 export default function Menu(){
     const [statements, setStatements] = useState([])
     const [balance, setBalance] = useState(0)
-    axios.get("https://mywallet-back-end-project.herokuapp.com/statement", {
-        headers: {
-            token: localStorage.getItem("token")
-        }
-    }).then((response) => {
-        setStatements(response.data)
-        setBalance(getTotal())
-    })
+    useEffect(() => {
+    function teste(){
+        const promise = axios.get("https://mywallet-back-end-project.herokuapp.com/statement", {
+            headers: {
+                token: localStorage.getItem("token")
+            }
+        })
+        promise.then((response) => {
+            setStatements(response.data)
+            console.log("foi")
+            setBalance(getTotal())
+            return balance
+        })
+        promise.catch((e) => {
+            console.log(e)
+        })
+}
+teste()
+}, [balance])
+
     return(
         <div>
             <Title>
@@ -25,7 +38,7 @@ export default function Menu(){
             </Title>
             <MainScreen>
                 <Values>
-                    {statements.map((data) =>
+                    {statements.length === 0 ? <Empty>Não há registros de entrada ou saída</Empty> : statements.map((data) =>
                     <Value>
                         <div>
                             <p style={{color: "#C6C6C6"}}>{data.date}</p>
@@ -56,20 +69,23 @@ export default function Menu(){
             </NewStatements>
         </div>
     )
-
+    
     function getTotal(){
         let total = 0
         statements.forEach((data) =>{
             if(data.idType === 1){
                 total += parseFloat(data.value)
+                console.log("aaaa")
             }
             else{
                 total -= parseFloat(data.value)
+                console.log("aaaa")
             }
             
         })
         return total.toFixed(2)
     }
+    
 }
 
 const MainScreen = styled.div`
@@ -88,6 +104,8 @@ const Values = styled.div`
     flex-direction: column;
     width: 100%;
     height: 80%;
+    overflow-y: scroll;
+    overflow-x: scroll;
 `
 
 const Value = styled.div`
@@ -100,6 +118,7 @@ const Value = styled.div`
         div{
             display: flex;
             justify-content: space-between;
+            line-break: auto;
             
             p{
                 margin-right: 10px;
@@ -168,4 +187,12 @@ const Balance = styled.div`
     p{
         font-weight: 700;
     }
+`
+
+const Empty = styled.p`
+    text-align: center;
+    margin: auto;
+    width: 50%;
+    margin-top: 50%;
+    color: #868686;
 `

@@ -13,7 +13,7 @@ export default function Entry(){
         <Forms>
             <form onSubmit={createEntry}>
                 <input onChange={(e) => setEntry({...entry, value: e.target.value})} placeholder="Valor" step="any" type="number"/>
-                <input onChange={(e) => setEntry({...entry, description: e.target.value})} placeholder="Descrição" type="text"/>
+                <input onChange={(e) => setEntry({...entry, description: e.target.value})} placeholder="Descrição" maxLength="15" type="text"/>
                 <SubmitButton type="submit"/>
             </form>
         </Forms>
