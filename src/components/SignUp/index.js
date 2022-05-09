@@ -1,20 +1,23 @@
 import axios from "axios"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import styled from "styled-components"
 
 export default function SignUp(){
     const navigate = useNavigate()
     const [userSignUp, setUserSignUp] = useState({name: "", email: "", password: "", repeatPassword: "" })
     return(
-        <div>
+        <SignUpPage>
+            <img src="../sources/MyWallet.png" alt="logo"/>
             <form onSubmit={createAccount}>
                 <input onChange={(e) => setUserSignUp({...userSignUp, name: e.target.value})} type="text" placeholder="Nome"/>
                 <input onChange={(e) => setUserSignUp({...userSignUp, email: e.target.value})} type="email" placeholder="Email"/>
                 <input onChange={(e) => setUserSignUp({...userSignUp, password: e.target.value})} type="password" placeholder="Senha"/>
                 <input onChange={(e) => setUserSignUp({...userSignUp, repeatPassword: e.target.value})} type="password" placeholder="Repetir senha"/>
-                <input type="submit"/>
+                <SubmitButton type="submit" value="Cadastrar"/>
             </form>
-        </div>
+            <Link to="/login"><p>Já tem conta?</p></Link>
+        </SignUpPage>
     )
 
     function createAccount(e){
@@ -26,7 +29,35 @@ export default function SignUp(){
         })
         promise.then(() => {
             navigate("/login")
-    })
+        })
         
     }
 }
+
+const SignUpPage = styled.div` 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+    input {
+        margin-bottom: 10px;
+    }
+    p {
+        color: #ffffff;
+    }
+`
+
+const SubmitButton = styled.input`
+    background-color: #A328D6;
+    color: #ffffff;
+    font-weight: 700;
+`

@@ -1,18 +1,21 @@
 import axios from "axios"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import styled from "styled-components"
 
 export default function Login(){
     const navigate = useNavigate()
     const [userLogin, setUserLogin] = useState({email: "", password: ""})
     return(
-        <div>
+        <LoginPage>
+            <img src="../sources/MyWallet.png" alt="logo"/>
             <form onSubmit={acessAccount}>
-                <input onChange={(e) => setUserLogin({...userLogin, email: e.target.value})} placeholder="email" type="email"/>
-                <input onChange={(e) => setUserLogin({...userLogin, password: e.target.value})} placeholder="senha" type="password"/>
-                <input type="submit"/>
+                <input onChange={(e) => setUserLogin({...userLogin, email: e.target.value})} placeholder="E-mail" type="email"/>
+                <input onChange={(e) => setUserLogin({...userLogin, password: e.target.value})} placeholder="Senha" type="password"/>
+                <SubmitButton type="submit" value="Entrar"/>
             </form>
-        </div>
+            <Link to="/"><p>Não tem conta?</p></Link>
+        </LoginPage>
     )
     
     function acessAccount(e){
@@ -22,8 +25,41 @@ export default function Login(){
             alert("Preencha corretamente!")
             console.log(e)
         })
-        promise.then(() => {
-            navigate("/test")
+        promise.then((response) => {
+            console.log(response)
+            localStorage.setItem("token", response.data[0])
+            localStorage.setItem("name", response.data[1])
+            console.log(localStorage.getItem("token"))
+            console.log(localStorage.getItem("name"))
+            navigate("/menu")
         })
     }
 }
+
+const LoginPage = styled.div` 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+    input {
+        margin-bottom: 10px;
+    }
+    p {
+        color: #ffffff;
+    }
+`
+
+const SubmitButton = styled.input`
+    background-color: #A328D6;
+    color: #ffffff;
+    font-weight: 700;
+`
