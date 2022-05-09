@@ -26,15 +26,17 @@ export default function Menu(){
             <MainScreen>
                 <Values>
                     {statements.map((data) =>
-                    <div>
-                        <p>{data.description}</p>
-                        <p style={{color:data.idType === 1 ? "green" : "red"}}>{data.value}</p>
-                    </div>
+                    <Value>
+                        <div>
+                            <p style={{color: "#C6C6C6"}}>{data.date}</p>
+                            <p>{data.description}</p>
+                        </div>
+                        <p style={{color:data.idType === 1 ? "green" : "red"}}>{(parseFloat(data.value).toFixed(2))}</p>
+                    </Value>
                     )}
-                    
                 </Values>
                 <Balance>
-                    <p>Saldo:</p>  
+                    <p>SALDO:</p>  
                     <p style={{color:balance >= 0 ? "green" : "red"}}>{balance}</p>
                 </Balance>
             </MainScreen>
@@ -59,14 +61,14 @@ export default function Menu(){
         let total = 0
         statements.forEach((data) =>{
             if(data.idType === 1){
-                total += parseInt(data.value)
+                total += parseFloat(data.value)
             }
             else{
-                total -= parseInt(data.value)
+                total -= parseFloat(data.value)
             }
             
         })
-        return total
+        return total.toFixed(2)
     }
 }
 
@@ -86,14 +88,24 @@ const Values = styled.div`
     flex-direction: column;
     width: 100%;
     height: 80%;
+`
 
-    div{
+const Value = styled.div`
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         width: 90%;
         margin: 15px auto 0 auto;
-    }
+
+        div{
+            display: flex;
+            justify-content: space-between;
+            
+            p{
+                margin-right: 10px;
+            }
+        }
+
 `
 
 const NewStatements = styled.div`
@@ -152,4 +164,8 @@ const Balance = styled.div`
     justify-content: space-between;
     align-items: center;
     margin: auto;
+
+    p{
+        font-weight: 700;
+    }
 `
